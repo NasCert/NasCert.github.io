@@ -1,0 +1,136 @@
+<!doctype>
+<html>
+
+<head>
+    <link href="libs/bootstrap-4.0.0-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+    <link href="stylesheets/ui-block.css" rel="stylesheet">
+    <link href="stylesheets/base.css" rel="stylesheet">
+    <meta name=viewport content="width=device-width">
+    <title>星云颁奖平台</title>
+</head>
+<body>
+    <div class=logo-main></div>
+    <div class="title" style="text-align: center;"></div>
+    <div class="header"></div>
+
+    <div id="transfer" class="container transfer">
+        <div class="form-group row">
+            <div class=col>
+                <label for=title>
+                    <span data-i18n=register/title>Title</span>
+                </label>
+                <input class=form-control id=title value="奖状">
+            </div>
+            <div class=col-md-6>
+                <label data-i18n=transfer/owner-address>To</label>
+                <div class="to icon-address"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class=col>
+                <label for=owner-name>
+                    <span data-i18n=register/owner-name>Name</span>
+                </label>
+                <div class="owner-name">
+                    <input id="owner-name" class="form-control" data-i18n="placeholder/name">
+                </div>
+            </div>
+            <div class=col>
+                <label for=content>
+                    <span data-i18n=register/text>Conetent</span>
+                </label>
+                <div class="content">
+                    <input id="content" class="form-control" data-i18n="placeholder/text">
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class=col>
+                <label for=date>
+                    <span data-i18n=register/date>Date</span>
+                </label>
+                <div class=date>
+                    <input id="date" class="form-control" data-i18n="placeholder/date">
+                </div>
+            </div>
+        </div>
+        <button id=generate class="btn btn-block" data-i18n=issue>Issue</button>
+    </div>
+    
+    <div class=footer></div>
+
+    <script src="libs/jquery-3.3.1.min.js"></script>
+    <script src="libs/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js" data-depends="jquery.slim"></script>
+    <script src="libs/external/jquery.md5.js"></script>
+    <script src="libs/bootbox.min.js" data-depends="bootstrap jquery.slim"></script>
+    <script src="libs/jquery.qrcode.min.js" data-depends="jquery"></script>
+    <script src="libs/blockies.min.js"></script>
+    <script src="dist/nebulas.js"></script>
+    <script src="libs/nebPay.js"></script>
+    <script src="js/1-localSave.js"></script>
+    <script src="js/home.v1.js"></script>
+    <script src="js/i18n.js" data-depends="jquery.slim"></script>
+    <script src="js/ui-block.js" data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
+    <script>
+            "use strict";
+
+            var NebPay = require("nebpay");
+            var nebPay = new NebPay();
+
+            var nebulas = require("nebulas"),
+                Utils = nebulas.Utils,
+                Unit = nebulas.Unit;
+
+            uiBlock.insert({
+                footer: ".footer",
+                title: ".title",
+                header: ".header",
+                iconAddress: ".icon-address",
+                logoMain: ".logo-main",
+            });
+
+            var callback = localSave.getItem("callback");
+            $("#generate").on("click", onClickGenerate);
+    
+            function onClickGenerate() {
+                var toAddress, amount, args;
+                var title,ownerName,ownerAddr,text,time;
+                if (uiBlock.validate()) {
+                    toAddress = localSave.getItem("contract");
+                    title = $("#title").val();
+                    ownerName = $("#owner-name").val();
+                    ownerAddr = $(".icon-address.to input").val();
+                    text = $("#content").val();
+                    time = $("#date").val();
+                    amount = "0";
+                    args=["", title, ownerName, ownerAddr, text, time];
+
+                   try {
+                        var serialNumber = nebPay.call(toAddress,Unit.nasToBasic(Utils.toBigNumber(amount)),"issue",JSON.stringify(args),{
+                            qrcode: {
+                                showQRCode: false
+                            },
+                            goods: {
+                                name: "issue"
+                            },
+                            callback: callback,
+                            listener: listener  //set listener for extension transaction result
+                        });
+                    } catch (e) {
+                        bootbox.dialog({
+                            backdrop: true,
+                            onEscape: true,
+                            message: e,
+                            size: "large",
+                            title: "Error"
+                        });
+                    }
+                }
+            }
+            function listener(resp) {
+                console.log("resp: " + JSON.stringify(resp))
+            }
+        </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+a {
+  color: #00B7FF;
+}
+
+span.warning{
+  color:#eeaa00;
+}
+
+span.error{
+  color:#dd0000;
+}
+
+span.ok{
+  color:#00aa00;
+}
+
+.certificate{
+  width:600px;
+  height:400px;
+  margin:20px;
+  padding:30px 60px;
+}
+
+.cert-title{
+  text-align: center;
+  color: coral;
+}
+
+.cert-name{
+  text-align: left;
+}
+
+.cert-text{
+  text-align: left
+}
+
+.cert-issuer{
+  text-align: right;
+}
+
+.cert-date{
+  text-align: right;
+}
