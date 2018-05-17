@@ -61,9 +61,16 @@
                 logoMain: ".logo-main",
                 numberComma: ".number-comma",
             });
+
     
             neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix")));
             $("#queryByIssuer").on("click", onClickQuery);
+
+            var queryAddr = getQueryVariable("addr");
+            if(queryAddr!=null) {
+                $(".icon-address.issuer input").val(queryAddr);
+                onClickQuery();
+            }
 
             function getInfo(result,param,ids,i) {
                 var hash = ids[i];

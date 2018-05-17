@@ -65,6 +65,12 @@
             neb.setRequest(new nebulas.HttpRequest(localSave.getItem("apiPrefix")));
             $("#queryByOwner").on("click", onClickQuery);
 
+            var queryAddr = getQueryVariable("addr");
+            if(queryAddr!=null) {
+                $(".icon-address.owner input").val(queryAddr);
+                onClickQuery();
+            }
+
             function getInfo(result,param,ids,i) {
                 var hash = ids[i];
                 var a=JSON.stringify([hash]);

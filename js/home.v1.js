@@ -26,60 +26,13 @@ function checkWallet(wallet) {
     return isWallet;
 }
 
-$(function () {
-    $('#frmToken').on("submit", function (e) {
-        e.preventDefault();
-
-        var email = $('#tokEmail').val();
-        var wallet = $("#tokWallet").val();
-        if (checkEmail(email) && checkWallet(wallet)) {
-            var url = "/claim/api/claim/" + email + "/" + wallet + "/";
-            $.get(url, function (resp) {
-                console.log(resp);
-                if (resp.hash) {
-                    bootbox.dialog({
-                        title: 'Send Claim Tx Successfully',
-                        message: "Claim Token Tx Hash is " + resp.hash,
-                        size: 'large'
-                    });
-                } else {
-                    bootbox.dialog({
-                        title: 'Send Claim Tx Failed',
-                        message: resp.error,
-                    });
-                }
-            }).fail(function () {
-                bootbox.alert({
-                    message: "Sorry, server is busy!",
-                });
-            });
-        }
-    });
-
-    $('#frmState').on("submit", function (e) {
-        e.preventDefault();
-
-        var wallet = $("#stWallet").val();
-        if (checkWallet(wallet)) {
-            var url = "/claim/api/state/" + wallet + "/";
-            $.get(url, function (resp) {
-                console.log(resp);
-                if (resp.balance) {
-                    bootbox.dialog({
-                        title: 'Fetch State Successfully',
-                        message: "Balance: " + resp.balance + "\nNonce: " + resp.nonce,
-                    });
-                } else {
-                    bootbox.dialog({
-                        title: 'Fetch State Failed',
-                        message: resp.error,
-                    });
-                }
-            }).fail(function () {
-                bootbox.alert({
-                    message: "Sorry, server is busy!",
-                });
-            });
-        }
-    });
-});
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
