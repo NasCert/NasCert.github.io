@@ -79,16 +79,8 @@
                 neb.api.call(param)
                 .then(function(tx) {
                     var centificate = JSON.parse(tx.result);
-                    var html = '<div class="certificate" style="background:url(./images/certificate.jpg);background-size: 600px 400px;">'+
-                        '<h3 class="cert-title" >'+centificate.title+'</h3>'+
-                        '<br>'+
-                        '<h5 class="cert-name">'+centificate.ownerName+'</h5>'+
-                        '<br>'+
+                    var html = '<div class="certificate">'+
                         '<div class="cert-text" >'+centificate.text+'</div>'+
-                        '<br>'+
-                        '<br>'+
-                        '<div class="cert-issuer">'+centificate.issuerName+'</div>'+
-                        '<div class="cert-date">'+centificate.time+'</div>'+
                         '</div>';
                     result.append(html);
                     ++i;
