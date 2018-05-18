@@ -114,7 +114,7 @@ var i18n = function () {
             "list/issuer-address": "Issuer Address",
             "list/button/query": "Query",
             "list/codes": "Your Codes",
-            "register/Title": "Title",
+            "register/title": "Title",
             "register/owner-name": "Name",
             "register/text": "Content",
             "register/date": "Date",

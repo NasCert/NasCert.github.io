@@ -199,7 +199,7 @@ CertificateLib.prototype = {
             throw new Error("Can't find the certificate!");
 
         var from = Blockchain.transaction.from;
-        if(certificate.issuerAddr != from)
+        if(certificate.issuerAddr != from || this._creator != from)
             throw new Error("You have not permission to delete this certificate!");
 
         var issuerAccount = this.issuerMap.get(from);
