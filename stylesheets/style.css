@@ -15,11 +15,7 @@ span.ok{
 }
 
 .certificate{
-  width:600px;
-  height:400px;
   margin:20px;
-  padding:30px 60px;
-  box-shadow: 0 0.3em 1em #000;
 }
 
 .cert-title{
