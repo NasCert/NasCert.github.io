@@ -87,6 +87,7 @@
                         getInfo(result,param,ids,i);
                     }
                     else{
+                        $("#queryByIssuer").removeAttr("disabled");
                         var firstCertificate = result.children(".certificate").first();
                         var pageWidth = firstCertificate.children().first().outerWidth();
                         if(result.width()<pageWidth) {
@@ -108,6 +109,7 @@
                     gasprice = 2000000;
                     contract={"function":"listByIssuer","args":JSON.stringify([fromAddress])}
 
+                    $("#queryByIssuer").attr("disabled", "disabled");
                     neb.api.getAccountState(fromAddress).then(function (resp) {
                         nonce = parseInt(resp.nonce || 0) + 1;
                         try {
@@ -126,18 +128,21 @@
                             neb.api.call(temp).then(function(tx) {
                                 if(!tx||!tx.result){
                                     result.html("query fails.");
+                                    $("#queryByIssuer").removeAttr("disabled");                                                                
                                     return;                                        
                                 }
 
                                 var ids = JSON.parse(tx.result).ids;
                                 if(!ids || ids.length===0) {
                                     result.html("no data.");
+                                    $("#queryByIssuer").removeAttr("disabled");                                                                
                                 }
                                 else {
                                     getInfo(result,temp,ids,0);
                                 }
                             });
                         } catch (e) {
+                            $("#queryByIssuer").removeAttr("disabled");                            
                             bootbox.dialog({
                                 backdrop: true,
                                 onEscape: true,
