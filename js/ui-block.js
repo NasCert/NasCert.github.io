@@ -201,10 +201,22 @@ var uiBlock = function () {
             }
         }
 
-        function logoMain(selector) {
+        function logoMain(selector,net,showMenu) {
             var i, len, apiList, langList,
                 apiPrefix, sApiButtons, sApiText,
                 lang, sLangButtons;
+
+            if(net!=null) {
+                net=net.toLowerCase();
+                if(net==="testnet")
+                    net = "https://testnet.nebulas.io";
+                else if(net==="mainnet")
+                    net = "https://mainnet.nebulas.io";
+                else if(net!=="https://testnet.nebulas.io"&&net!=="https://testnet.nebulas.io")
+                    net=null;
+                if(net)
+                    localSave.setItem("apiPrefix",net);
+            }
 
             //
             // apiPrefix
@@ -268,12 +280,12 @@ var uiBlock = function () {
                 .html(
                     "<div class=row>" +
                     "    <div class=col></div>" +
-                    "    <div class=col>" +
+                    "    <div class=col>" + (showMenu?
                     "        <div class=dropdown>" +
                     '            <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>' + sApiText + "</button>" +
                     '            <div class="dropdown-menu api" aria-labelledby=logo-main-dropdown-1>' + sApiButtons +
                     "            </div>" +
-                    "        </div>" +
+                    "        </div>":"") +
                     "        <div class=dropdown>" +
                     '            <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name></button>' +
                     '            <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
