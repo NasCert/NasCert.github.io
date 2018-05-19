@@ -79,13 +79,21 @@
                 neb.api.call(param)
                 .then(function(tx) {
                     var centificate = JSON.parse(tx.result);
-                    var html = '<div class="certificate">'+
-                        '<div class="cert-text" >'+centificate.text+'</div>'+
+                    var html = '<div class="certificate">'+centificate.text+
                         '</div>';
                     result.append(html);
                     ++i;
                     if(i<ids.length) {
                         getInfo(result,param,ids,i);
+                    }
+                    else{
+                        var firstCertificate = result.children(".certificate").first();
+                        var pageWidth = firstCertificate.children().first().outerWidth();
+                        if(result.width()<pageWidth) {
+                            var offset = result.outerWidth(true)-firstCertificate.width();
+                            result.css({"transform":"scale("+result.outerWidth(true)/(pageWidth+offset)+")",
+                            "transformOrigin":"left top"});
+                        }
                     }
                 });
             }

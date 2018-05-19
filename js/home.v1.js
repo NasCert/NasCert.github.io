@@ -36,3 +36,18 @@ function getQueryVariable(variable)
     }
     return null;
 }
+
+function getWindowSize(){
+	var w = window.innerWidth ||
+		document.documentElement.clientWidth ||
+		document.body.clientWidth;
+
+	var h = window.innerHeight ||
+		document.documentElement.clientHeight ||
+		document.body.clientHeight;
+
+	return {
+		width: w,
+		height: h
+	};
+}
