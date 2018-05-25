@@ -78,7 +78,6 @@
     <script src="js/ui-block.js" data-depends="bootbox blockies jquery.slim i18n.js nebulas.js"></script>
     <script>
             "use strict";
-
             var NebPay = require("nebpay");
             var nebPay = new NebPay();
 
@@ -95,6 +94,16 @@
                 iconAddress: ".icon-address",
                 logoMain: [".logo-main", queryNet, queryNet==null],
             });
+
+            if(typeof (webExtensionWallet) === "undefined") {
+                bootbox.dialog({
+                    backdrop: true,
+                    onEscape: true,
+                    message: "Need install extensionWallet plugin!",
+                    size: "large",
+                    title: "Error"
+                });
+            }
 
             var callback = localSave.getItem("callback");
             $("#generate").on("click", onClickGenerate);

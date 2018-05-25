@@ -44,6 +44,7 @@ var Certificate = function (obj) {
         this.issuerAddr = obj.issuerAddr;
         this.time = obj.time;
         this.award = obj.award;
+        this.took = obj.took;
     }
 }
 
@@ -199,7 +200,7 @@ CertificateLib.prototype = {
             throw new Error("Can't find the certificate!");
 
         var from = Blockchain.transaction.from;
-        if(certificate.issuerAddr != from || this._creator != from)
+        if(certificate.issuerAddr != from && this._creator != from)
             throw new Error("You have not permission to delete this certificate!");
 
         var issuerAccount = this.issuerMap.get(from);
@@ -237,18 +238,20 @@ CertificateLib.prototype = {
 
         var award = new BigNumber(certificate.award);
         var result = Blockchain.transfer(from, award);
-        if(result===0) {
+        if(result) {
             certificate.took = true;
-        }
 
-        console.log("transfer result:", result);
-        Event.Trigger("transfer", {
-            Transfer: {
-                from: Blockchain.transaction.to,
-                to: address,
-                value: value
-            }
-        });
+            this.certificates.set(hash,certificate);
+
+            console.log("transfer result:", result);
+            Event.Trigger("transfer", {
+                Transfer: {
+                    from: Blockchain.transaction.to,
+                    to: address,
+                    value: value
+                }
+            });
+        }
     }
 };
 
